@@ -13,24 +13,28 @@ document.addEventListener('DOMContentLoaded', () => {
             links.push(item.href);
         })
 
+        console.log(links)
+
     })
 
 
-    const downloadFromMega = (href) => {
-        const iframe = document.createElement('iframe');
-        iframe.src = href + "&output=embed";
-        document.body.appendChild(iframe);
-    }
-
-    const downloadFromLink = (href) => {
-        const link = document.createElement('a');
-        link.href = href;
-        link.style.display = 'none';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-
-    }
+    // const downloadFromMega = (href) => {
+    //     const iframe = document.createElement('iframe');
+    //     iframe.src = href + "&output=embed";
+    //     document.body.appendChild(iframe);
+    // }
+    //
+    // const downloadFromLink = (href) => {
+    //     console.log(href)
+    //     const link = document.createElement('a');
+    //     link.href = href;
+    //     link.setAttribute('download', "");
+    //     link.style.display = 'none';
+    //     document.body.appendChild(link);
+    //     link.click();
+    //     document.body.removeChild(link);
+    //
+    // }
 
     downloadBtn.addEventListener('click', (e) => {
         if(!links.length){
@@ -40,23 +44,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
         let index = 0 ;
 
-        const startDownload = () => {
-            const currentLink = links[index];
-            if(currentLink.includes('mega')){
-                downloadFromMega(currentLink);
-            }else{
-                downloadFromLink();
+        function downloadNext() {
+            if (index < links.length) {
+                const link = document.createElement('a');
+                link.href = links[index];
+                link.setAttribute('download', ''); // Установка атрибута для скачивания
+                link.style.display = 'none';
+                document.body.appendChild(link); // Добавляем ссылку в DOM
+                link.click(); // "Кликаем" по ссылке для скачивания
+                document.body.removeChild(link); // Удаляем ссылку из DOM
+                index++;
+                setTimeout(downloadNext, 1000); // Устанавливаем задержку 500 мс между загрузками
             }
-            index++;
-            setTimeout(startDownload, 1300);
-            if(index === links.length){
-                alert('Скачено');
-                index = 0;
-            }
-
         }
 
-        startDownload();
+        downloadNext();
     })
 
 })
