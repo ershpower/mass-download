@@ -25,7 +25,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const downloadFromLink = (href) => {
         const link = document.createElement('a');
         link.href = href;
-        link.setAttribute('download', "");
         link.style.display = 'none';
         document.body.appendChild(link);
         link.click();
